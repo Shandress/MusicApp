@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace MusicApp.Data.Parsing
 {
-    class Parser
+    /// <summary>
+    /// Used to 
+    /// </summary>
+    class HtmlToObjects
     {
 
     }
