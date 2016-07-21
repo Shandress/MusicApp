@@ -1,0 +1,1 @@
+c:\users\dark\documents\visual studio 2015\Projects\MusicApp\MusicApp\bin\Debug\MusicApp.exe.config
