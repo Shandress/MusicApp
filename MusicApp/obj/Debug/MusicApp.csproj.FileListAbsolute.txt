@@ -1,1 +1,9 @@
 c:\users\dark\documents\visual studio 2015\Projects\MusicApp\MusicApp\bin\Debug\MusicApp.exe.config
+C:\Users\Dark\documents\visual studio 2015\Projects\MusicApp\MusicApp\bin\Debug\MusicApp.exe
+C:\Users\Dark\documents\visual studio 2015\Projects\MusicApp\MusicApp\bin\Debug\MusicApp.pdb
+C:\Users\Dark\documents\visual studio 2015\Projects\MusicApp\MusicApp\bin\Debug\HtmlAgilityPack.dll
+C:\Users\Dark\documents\visual studio 2015\Projects\MusicApp\MusicApp\obj\Debug\MusicApp.csprojResolveAssemblyReference.cache
+C:\Users\Dark\documents\visual studio 2015\Projects\MusicApp\MusicApp\obj\Debug\MusicApp.Properties.Resources.resources
+C:\Users\Dark\documents\visual studio 2015\Projects\MusicApp\MusicApp\obj\Debug\MusicApp.csproj.GenerateResource.Cache
+C:\Users\Dark\documents\visual studio 2015\Projects\MusicApp\MusicApp\obj\Debug\MusicApp.exe
+C:\Users\Dark\documents\visual studio 2015\Projects\MusicApp\MusicApp\obj\Debug\MusicApp.pdb

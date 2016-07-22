@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,9 +12,10 @@ namespace MusicApp.Data.MusicClasses
     /// </summary>
     class Album
     {
-        string Title { get; set; }
-        ushort ReleaseDate { get; set; }
-        List<Song> Songs { get; set; }
+        public string Title { get; set; }
+        public ushort ReleaseDate { get; set; }
+        public List<Song> Songs { get; set; }
+        public Image Image { get; set; }
 
         /// <summary>
         /// Creates an Album intance with default parameters.
@@ -23,16 +25,18 @@ namespace MusicApp.Data.MusicClasses
             Title = string.Empty;
             ReleaseDate = 0;
             Songs = new List<Song>();
+            Image = new Bitmap(0, 0);
         }
 
         /// <summary>
         /// Creates an Album intance with given parameters.
         /// </summary>
-        public Album(string title, ushort year, List<Song> songs)
+        public Album(string title, ushort year, List<Song> songs, Image image)
         {
             Title = title;
             ReleaseDate = year;
             Songs = new List<Song>(songs);
+            Image = new Bitmap(image);
         }
 
     }

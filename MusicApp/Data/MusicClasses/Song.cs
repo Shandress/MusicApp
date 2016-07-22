@@ -12,5 +12,16 @@ namespace MusicApp.Data.MusicClasses
         public string Title { get; set; }
 
         // In time there will be more info....
+
+
+        public Song()
+        {
+            Title = string.Empty;
+        }
+
+        public Song(string title)
+        {
+            Title = title;
+        }
     }
 }
