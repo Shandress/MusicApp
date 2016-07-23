@@ -23,5 +23,10 @@ namespace MusicApp.Data.MusicClasses
         {
             Title = title;
         }
+
+        public override string ToString()
+        {
+            return this.Title;
+        }
     }
 }
