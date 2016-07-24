@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MusicApp.Data.MusicClasses
 {
@@ -15,8 +11,13 @@ namespace MusicApp.Data.MusicClasses
         public string Title { get; set; }
         public ushort ReleaseDate { get; set; }
         public List<Song> Songs { get; set; }
-        public Image Image { get; set; }
+        public Image Cover { get; set; }
         public List<string> Styles { get; set; }
+
+        /// <summary>
+        /// Album's type: Studio album, Compilation, Single etc.
+        /// </summary>
+        public string Type { get; set; }
 
         /// <summary>
         /// Creates an Album intance with default parameters.
@@ -26,20 +27,26 @@ namespace MusicApp.Data.MusicClasses
             Title = string.Empty;
             ReleaseDate = 0;
             Songs = new List<Song>();
-            Image = new Bitmap(10, 10);
+            Cover = new Bitmap(10, 10);
             Styles = new List<string>();
+            Type = string.Empty;
         }
 
         /// <summary>
         /// Creates an Album intance with given parameters.
         /// </summary>
-        public Album(string title, ushort year, List<Song> songs, Image image, List<string> styles)
+        public Album(string title, ushort year, List<Song> songs, Image image, List<string> styles, string type)
         {
             Title = title;
             ReleaseDate = year;
             Songs = new List<Song>(songs);
-            Image = new Bitmap(image);
+            Cover = new Bitmap(image);
             Styles = new List<string>(styles);
+        }
+
+        public override string ToString()
+        {
+            return Title + ", " + ReleaseDate;
         }
 
     }

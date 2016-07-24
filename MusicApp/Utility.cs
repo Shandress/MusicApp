@@ -41,14 +41,22 @@ namespace MusicApp
         /// <summary>
         /// Saves a given image on the disk in the given location.
         /// </summary>
-        public static void SaveImage(string path, Image toSave)
+        public static void SaveImage(Image toSave)
         {
             if(!Directory.Exists(Constants.ImageDir))
             {
                 Directory.CreateDirectory(Constants.ImageDir);
             }
-            
-            toSave.Save(path + toSave.Tag.ToString() + ".jpg");
+            string[] parts = toSave.Tag.ToString().Split(',');
+            string imagePath = Constants.ImageDir + parts[0] + "/";
+            if(!Directory.Exists(imagePath))
+            {
+                Directory.CreateDirectory(imagePath);
+            }
+
+            parts[1] = parts[1].TrimStart();
+
+            toSave.Save(imagePath + parts[1] + ".jpg");
             toSave.Dispose();
         }
     }

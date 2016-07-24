@@ -14,11 +14,12 @@ namespace MusicApp
         {
             string url = @"https://musicmp3.ru/artist_xandria__album_sacrificium.html#.V5IwqEZ9600";
             url = @"https://musicmp3.ru/artist_myrath.html";
+            url = @"https://musicmp3.ru/artist_arch-enemy.html";
             HtmlWeb w = new HtmlWeb();
             HtmlDocument doc = w.Load(url);
             HtmlNode albumNode = doc.DocumentNode
-                .SelectSingleNode("//div[@class='album_report'][2]");
-            var x = HtmlToObjects.ParseAlbum(albumNode);
+                .SelectSingleNode("//div[@class='album_report'][1]");
+            var x = HtmlToObjects.ParseArtist(url);
         }
     }
 }

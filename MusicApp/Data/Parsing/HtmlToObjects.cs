@@ -15,18 +15,109 @@ namespace MusicApp.Data.Parsing
     /// </summary>
     class HtmlToObjects
     {
-        public static Album ParseAlbum(HtmlNode albumTag)
+
+        public static Artist ParseArtist(string url)
+        {
+            HtmlWeb w = new HtmlWeb();
+            HtmlDocument doc = w.Load(url);
+            HtmlNode root = doc.DocumentNode;
+
+            IEnumerable<HtmlNode> sections = root.SelectNodes(Constants.XPath.Discography);
+            
+            
+
+            Artist artist = new Artist();
+            artist.Title = root.SelectSingleNode(Constants.XPath.ArtistTitle).InnerText;
+            //artist.FoundationYear = 
+
+
+            foreach(HtmlNode section in sections)
+            {
+                artist.Discography.AddRange(ProcessAlbums(section));
+            }
+
+            GetArtistInfo(ref artist, root);
+
+            return artist;
+        }
+
+        private static void GetArtistInfo(ref Artist artist, HtmlNode infoTag)
+        {
+            HtmlNode infoNode = infoTag.SelectSingleNode(Constants.XPath.ArtistInfo);
+            HtmlNode artistPictureNode = infoNode.SelectSingleNode(Constants.XPath.ArtistImage);
+            GetTextInfo(ref artist, infoNode);
+
+
+        }
+
+        private static void GetTextInfo(ref Artist artist, HtmlNode infoTag)
+        {
+            IEnumerable<HtmlNode> nodes = infoTag.SelectNodes("./li");
+            Dictionary<string, string[]> rows = new Dictionary<string, string[]>();
+
+            foreach(HtmlNode node in nodes)
+            {
+                string[] line = node.InnerText.Split(':');
+                if(line[0].Equals("Website"))
+                {
+                    continue;
+                }
+                rows.Add(line[0], line[1].Split(','));  
+                
+            }
+            if (rows.ContainsKey(Constants.FoundationYear))
+            {
+                artist.FoundationYear = ushort.Parse(rows[Constants.FoundationYear][0]);
+            }
+            if (rows.ContainsKey(Constants.Genres))
+            {
+                artist.Styles.AddRange(rows[Constants.Genres]);
+            }
+        }
+
+
+
+        private static List<Album> ProcessAlbums(HtmlNode section)
+        {
+            List<Album> res = new List<Album>();
+            string type = GetAlbumType(section.SelectSingleNode(Constants.XPath.AlbumType));
+            IEnumerable<HtmlNode> albumTags = section.SelectNodes(Constants.XPath.Albums);
+            foreach(HtmlNode albumTag in albumTags)
+            {
+                res.Add(CreateAlbum(albumTag, type));
+            }
+            return res;
+        }
+
+        private static string GetAlbumType(HtmlNode typeTag)
+        {
+            string type = typeTag.InnerText;
+            if(type.EndsWith("s"))
+            {
+                type = type.Remove(type.Length - 1);
+            }
+            return type;
+        }
+
+        /// <summary>
+        /// Processes the album tag and creates an album with all necessary 
+        /// information i.e. title, type, date, picture, songs.
+        /// </summary>
+        /// <param name="albumTag"></param>
+        /// <returns></returns>
+        private static Album CreateAlbum(HtmlNode albumTag, string type)
         {
             string baseUrl = @"https://musicmp3.ru";
             string link = string.Empty;
             Album album = new Album();
-            album.Title = albumTag.SelectSingleNode(Constants.XPath.AlbumTitleXpath).InnerText;
-            album.ReleaseDate = ushort.Parse(albumTag.SelectSingleNode(Constants.XPath.AlbumYearXpath).InnerText);
+            album.Title = albumTag.SelectSingleNode(Constants.XPath.AlbumTitle).InnerText;
+            album.Type = type;
+            album.ReleaseDate = ushort.Parse(albumTag.SelectSingleNode(Constants.XPath.AlbumYear).InnerText);
             album.Styles.AddRange(albumTag
-                .SelectNodes(Constants.XPath.AlbumGenresXpath)
+                .SelectNodes(Constants.XPath.AlbumGenres)
                 .Select(n => n.InnerText));
 
-            HtmlNode node = albumTag.SelectSingleNode(Constants.XPath.AlbumLinkXpath);
+            HtmlNode node = albumTag.SelectSingleNode(Constants.XPath.AlbumLink);
             HtmlAttribute attribute = node.Attributes["href"];
             if(attribute != null)
             {
@@ -36,11 +127,9 @@ namespace MusicApp.Data.Parsing
                 HtmlWeb w = new HtmlWeb();
                 HtmlDocument doc = w.Load(baseUrl + link);
                 HtmlNode imgNode = doc.DocumentNode
-                    .SelectSingleNode(Constants.XPath.AlbumImgXpath);
-                album.Image = GetImage(imgNode);
+                    .SelectSingleNode(Constants.XPath.AlbumImg);
+                album.Cover = GetImage(imgNode);
             }
-
-            
 
             return album;
             
@@ -49,14 +138,14 @@ namespace MusicApp.Data.Parsing
         /// <summary>
         /// Processes a link to an album page and gets all songs the album contains.
         /// </summary>
-        public static List<Song> ParseSongs(string url)
+        private static List<Song> ParseSongs(string url)
         {
             List<Song> songs = new List<Song>();
             HtmlWeb w = new HtmlWeb();
             HtmlDocument doc = w.Load(url);
             HtmlNode root = doc.DocumentNode;
             return root
-                .SelectNodes(Constants.XPath.SongsXpath)
+                .SelectNodes(Constants.XPath.Songs)
                 .Select(node => new Song(node.InnerText))
                 .ToList();
         }
@@ -64,7 +153,7 @@ namespace MusicApp.Data.Parsing
         /// <summary>
         /// Gets an image from the iage tag and saves it on disk if it exists or ImageNotFound picture otherwise.
         /// </summary>
-        public static Image GetImage(HtmlNode imageTag)
+        private static Image GetImage(HtmlNode imageTag, string albumType)
         {
             HtmlAttribute attribute = imageTag.Attributes["src"];
 
@@ -80,7 +169,7 @@ namespace MusicApp.Data.Parsing
                 Image cover = Utility.DownloadImage(src);
                 cover.Tag = tag;
                 Image copy = cover.Clone() as Image;
-                Utility.SaveImage(Constants.ImageDir, cover);
+                Utility.SaveImage(cover);
                 return new Bitmap(copy);
             }
             else
@@ -94,7 +183,7 @@ namespace MusicApp.Data.Parsing
         /// </summary>
         private static Song ParseSong(HtmlNode songTag)
         {
-            string title = songTag.SelectSingleNode(Constants.XPath.SongXpath).InnerText;
+            string title = songTag.SelectSingleNode(Constants.XPath.Song).InnerText;
             return new Song(title);
         }
     }

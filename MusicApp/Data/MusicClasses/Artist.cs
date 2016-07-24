@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,7 +18,9 @@ namespace MusicApp.Data.MusicClasses
         public string Title { get; set; }
         public ushort FoundationYear { get; set; }
         public string Biography { get; set; }
-        public List<Album> Albums { get; set; }
+        public List<Album> Discography { get; set; }
+        public Image Image { get; set; }
+        public List<string> Styles { get; set; }
 
         /// <summary>
         /// Creates a new Artist instance with default values.
@@ -27,7 +30,9 @@ namespace MusicApp.Data.MusicClasses
             Title = string.Empty;
             FoundationYear = 0;
             Biography = string.Empty;
-            Albums = new List<Album>();
+            Discography = new List<Album>();
+            Image = new Bitmap(10, 10);
+            Styles = new List<string>();
         }
 
         /// <summary>
@@ -38,7 +43,7 @@ namespace MusicApp.Data.MusicClasses
             Title = title;
             FoundationYear = year;
             Biography = bio;
-            Albums = new List<Album>(albums);
+            Discography = new List<Album>(albums);
         }
 
 
