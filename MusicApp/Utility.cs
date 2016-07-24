@@ -48,7 +48,7 @@ namespace MusicApp
                 Directory.CreateDirectory(Constants.ImageDir);
             }
             string[] parts = toSave.Tag.ToString().Split(',');
-            string imagePath = Constants.ImageDir + parts[0] + "/";
+            string imagePath = Constants.ImageDir + parts[0] + "/" + parts[2] + "/";
             if(!Directory.Exists(imagePath))
             {
                 Directory.CreateDirectory(imagePath);

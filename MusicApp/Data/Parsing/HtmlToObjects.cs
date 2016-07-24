@@ -128,7 +128,7 @@ namespace MusicApp.Data.Parsing
                 HtmlDocument doc = w.Load(baseUrl + link);
                 HtmlNode imgNode = doc.DocumentNode
                     .SelectSingleNode(Constants.XPath.AlbumImg);
-                album.Cover = GetImage(imgNode);
+                album.Cover = GetImage(imgNode, type);
             }
 
             return album;
@@ -162,7 +162,7 @@ namespace MusicApp.Data.Parsing
             if (attribute != null)
             {
                 src = attribute.Value;
-                tag = imageTag.Attributes["alt"].Value;
+                tag = imageTag.Attributes["alt"].Value + "," + albumType;
             }
             if(src != string.Empty)
             {
